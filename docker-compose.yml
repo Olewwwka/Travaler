@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  cp:
+    image: postgres:latest  # Используем последнюю версию PostgreSQL
+    container_name: cp
+    environment:
+      POSTGRES_USER: admin          # Имя пользователя
+      POSTGRES_PASSWORD: 1111       # Пароль пользователя
+      POSTGRES_DB: course_db        # Имя базы данных
+    ports:
+      - "7777:5432"                 # Пробрасываем порт 5432 контейнера на порт 7777 хоста
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Сохраняем данные PostgreSQL в volume
+    restart: always                 # Автоматически перезапускать контейнер при сбоях
+
+volumes:
+  postgres_data:  # Определяем volume для хранения данных PostgreSQL

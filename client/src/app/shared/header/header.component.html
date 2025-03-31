@@ -1,0 +1,31 @@
+<header class="header">
+  <div class="header-content">
+    <div class="logo">Traveler</div>
+    <div class="user-info">
+      <ng-container *ngIf="user">
+        <span class="user-name">{{ user.name }}</span>
+        <img [src]="photoUrl" alt="User photo" class="user-photo" *ngIf="photoUrl">
+        <button mat-button routerLink="/profile">
+          <span>Профиль</span>
+        </button>
+        <button mat-button routerLink="/map">
+          <span>Карта</span>
+        </button>
+        <button mat-button routerLink="/places">
+          <span>Места</span>
+        </button>
+        <button mat-button (click)="logout()">
+          <span>Выйти</span>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!user">
+        <button mat-button routerLink="/auth/login">
+          <span>Войти</span>
+        </button>
+        <button mat-button routerLink="/auth/register">
+          <span>Регистрация</span>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</header> 

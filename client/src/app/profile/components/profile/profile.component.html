@@ -1,0 +1,81 @@
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <div class="profile-content">
+        <app-photo-upload
+          [photoUrl]="photoUrl"
+          [hasCustomPhoto]="hasCustomPhoto"
+          [isDefaultPhoto]="isDefaultPhoto"
+          (fileSelected)="onFileSelected($event)"
+          (deletePhoto)="onDeletePhoto()"
+        ></app-photo-upload>
+
+        <div class="profile-info">
+          <app-form-field
+            label="Имя"
+            [value]="editedName"
+            [isEditing]="isEditingName"
+            (valueChange)="editedName = $event"
+            (edit)="editName()"
+            (save)="saveName()"
+            (cancel)="cancelEditingName()"
+          ></app-form-field>
+
+          <app-form-field
+            label="Email"
+            [value]="editedEmail"
+            [isEditing]="isEditingEmail"
+            (valueChange)="editedEmail = $event"
+            (edit)="editEmail()"
+            (save)="saveEmail()"
+            (cancel)="cancelEditingEmail()"
+          ></app-form-field>
+
+          <div class="password-section">
+            <h3>Смена пароля</h3>
+            <app-form-field
+              label="Текущий пароль"
+              type="password"
+              [value]="currentPassword"
+              (valueChange)="currentPassword = $event"
+            ></app-form-field>
+            <app-form-field
+              label="Новый пароль"
+              type="password"
+              [value]="newPassword"
+              (valueChange)="newPassword = $event"
+            ></app-form-field>
+            <app-form-field
+              label="Подтверждение нового пароля"
+              type="password"
+              [value]="confirmPassword"
+              (valueChange)="confirmPassword = $event"
+            ></app-form-field>
+            <button mat-raised-button color="primary" (click)="changePassword()" [disabled]="!isPasswordValid()">
+              Сменить пароль
+            </button>
+          </div>
+        </div>
+
+        <div class="favorite-points">
+          <h3>Избранные точки</h3>
+          <div class="points-list">
+            <div *ngFor="let point of favoritePoints" class="point-item">
+              <div class="point-info">
+                <h4>{{ point.name }}</h4>
+                <p>{{ point.description }}</p>
+                <p>Координаты: {{ point.latitude }}, {{ point.longitude }}</p>
+              </div>
+              <button mat-icon-button color="warn" (click)="removeFromFavorites(point)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="favoritePoints.length === 0" class="no-points">
+              <p>У вас пока нет избранных точек</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div> 

@@ -1,0 +1,145 @@
+<!-- Карта -->
+<div class="map" #map></div>
+
+<!-- Основной сайдбар -->
+<div class="sidebar" [class.closed]="!isSidebarOpen">
+  <div class="sidebar-content">
+    <h3>Маршрут</h3>
+    <div *ngFor="let point of routePoints; let i = index" class="route-point">
+      <div class="point-input-container">
+        <input type="text" 
+               [(ngModel)]="point.name" 
+               placeholder="Название точки" 
+               [disabled]="point.isUserLocation || false"
+               (input)="onPointNameInput($event, i)"
+               (blur)="onBlur()">
+        <div class="suggestions" *ngIf="showSuggestions && selectedPointIndex === i">
+          <div *ngFor="let suggestion of suggestions" 
+               class="suggestion-item"
+               (click)="selectSuggestion(suggestion)">
+            {{ suggestion.name }}
+          </div>
+        </div>
+      </div>
+      <div class="button-wrapper">
+        <button (click)="movePoint(i, -1)" [disabled]="i === 0 || (point.isUserLocation || false)">
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button (click)="movePoint(i, 1)" [disabled]="i === routePoints.length - 1 || (point.isUserLocation || false)">
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+        <button (click)="showPointOnMap(point)">
+          <mat-icon>location_on</mat-icon>
+        </button>
+        <button (click)="removePoint(i)" [disabled]="point.isUserLocation || false">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="button-wrapper">
+      <button (click)="addPoint()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button (click)="saveRoute()">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button (click)="deleteRoute()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <button class="toggle-sidebar-btn" (click)="toggleSidebar()">
+    <mat-icon>{{ isSidebarOpen ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+  </button>
+</div>
+
+<!-- Сайдбар со списком точек -->
+<div class="points-sidebar">
+  <div class="points-sidebar-content">
+    <div class="search-container">
+      <input type="text" class="search-input" [(ngModel)]="searchQuery" placeholder="Поиск точек...">
+    </div>
+    <div class="points-list">
+      <div *ngFor="let point of filteredPoints" class="points-list-item">
+        <div class="point-info">
+          <h4>{{ point.name }}</h4>
+          <p class="coordinates">{{ point.latitude | number:'1.6-6' }}° {{ point.longitude | number:'1.6-6' }}°</p>
+        </div>
+        <div class="point-actions">
+          <button (click)="toggleFavorite(point.id)">
+            <mat-icon [class.favorite]="isFavorite(point.id)">star</mat-icon>
+          </button>
+          <button (click)="addToRoute(point)">
+            <mat-icon>add_location</mat-icon>
+          </button>
+          <button (click)="showPointOnMap(point)">
+            <mat-icon>location_on</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="filteredPoints.length === 0" class="no-results">
+        Точки не найдены
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Кнопки на карте -->
+<div class="map-buttons">
+  <button (click)="toggleDbPoints()">
+    <mat-icon>{{ showDbPoints ? 'location_on' : 'location_off' }}</mat-icon>
+  </button>
+  <button (click)="getCurrentLocation()">
+    <mat-icon>my_location</mat-icon>
+  </button>
+</div>
+
+<!-- Контекстное меню -->
+<div #contextMenu id="context-menu" class="context-menu">
+  <button (click)="showAddPointMenu($event)">
+    <mat-icon>add_location</mat-icon>
+    Добавить точку
+  </button>
+</div>
+
+<!-- Форма добавления точки -->
+<form #addPointMenu id="add-point-menu" class="add-point-menu" (submit)="saveNewPoint(addPointMenu); $event.preventDefault()">
+  <div class="form-group">
+    <input type="text" id="point-name" placeholder="Название точки" required>
+  </div>
+  <div class="form-group">
+    <textarea id="point-description" placeholder="Описание точки" required></textarea>
+  </div>
+  <div class="form-actions">
+    <button type="button" (click)="hideAddPointMenu()">
+      <mat-icon>close</mat-icon>
+      Отмена
+    </button>
+    <button type="submit">
+      <mat-icon>save</mat-icon>
+      Сохранить
+    </button>
+  </div>
+</form>
+
+<!-- Всплывающее окно -->
+<div #popup id="popup" class="popup">
+  <div #popupContent id="popup-content" class="popup-content">
+    <h3>{{ mapService.getSelectedPoint()?.name }}</h3>
+    <p>{{ mapService.getSelectedPoint()?.description }}</p>
+    <div class="popup-actions">
+      <button class="popup-button" data-action="edit" (click)="editPoint()">
+        <mat-icon>edit</mat-icon>
+        Редактировать
+      </button>
+      <button class="popup-button" data-action="delete" (click)="deletePoint()">
+        <mat-icon>delete</mat-icon>
+        Удалить
+      </button>
+      <button class="popup-button" data-action="route" (click)="addSelectedPointToRoute()">
+        <mat-icon>add_location</mat-icon>
+        Добавить в маршрут
+      </button>
+    </div>
+  </div>
+</div>

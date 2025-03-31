@@ -1,0 +1,16 @@
+<div class="auth-container">
+    <div *ngIf="showLogin; else registerForm">
+      <app-login></app-login>
+    </div>
+  
+    <ng-template #registerForm>
+      <app-register></app-register>
+    </ng-template>
+  
+    <div class="buttons">
+      <button mat-fab extended (click)="toggleForm()">
+        {{ showLogin ? 'Перейти к регистрации' : 'Уже есть аккаунт? Войти' }}
+      </button>
+    </div>
+  </div>
+  

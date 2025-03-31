@@ -1,0 +1,114 @@
+<div class="places-container">
+  <div class="places-grid">
+    <div class="place-card" *ngFor="let place of places" (click)="openPlaceDetails(place)">
+      <div class="place-content">
+        <div class="image-container">
+          <img [src]="place.imageUrl || 'assets/default-place.jpg'" [alt]="place.name">
+          <div class="place-actions">
+            <button class="action-btn" [class.favorite]="place.isFavorite" (click)="toggleFavorite(place); $event.stopPropagation()" title="В избранное">
+              <mat-icon>star</mat-icon>
+            </button>
+            <button class="action-btn delete" (click)="deletePlace($event, place)" title="Удалить">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="place-info">
+          <h3>{{ place.name }}</h3>
+          <p class="description">{{ place.description }}</p>
+          <div class="place-details">
+            <div class="rating-info">
+              <span class="rating-label">Rating:</span>
+              <mat-icon class="star-icon">star</mat-icon>
+              <span>{{ place.averageRating || 0 }}</span>
+            </div>
+            <p><strong>Широта:</strong> {{ place.latitude }}</p>
+            <p><strong>Долгота:</strong> {{ place.longitude }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="pagination">
+    <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+      Предыдущая
+    </button>
+    <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+    <button [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+      Следующая
+    </button>
+  </div>
+</div>
+
+<div class="modal-overlay" [class.visible]="selectedPlace" (click)="closePlaceDetails()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <img [src]="selectedPlace?.imageUrl || 'assets/default-place.jpg'" [alt]="selectedPlace?.name" class="modal-image">
+    <button class="modal-close" (click)="closePlaceDetails()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="modal-header">
+      <h2>{{ selectedPlace?.name }}</h2>
+    </div>
+    <div class="modal-body">
+      <p>{{ selectedPlace?.description }}</p>
+      <p><strong>Координаты:</strong></p>
+      <p>Широта: {{ selectedPlace?.latitude }}</p>
+      <p>Долгота: {{ selectedPlace?.longitude }}</p>
+      
+      <div class="reviews-section">
+        <h3>Отзывы</h3>
+        
+        <div class="review-form">
+          <div class="review-form-content">
+            <div class="user-avatar">
+              <img src="assets/default-avatar.png" alt="Аватар пользователя">
+            </div>
+            <div class="review-inputs">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Ваш отзыв</mat-label>
+                <textarea matInput [(ngModel)]="newReview.text" rows="3" placeholder="Опишите ваши впечатления"></textarea>
+              </mat-form-field>
+
+              <div class="rating-input">
+                <span>Оценка:</span>
+                <div class="rating-stars">
+                  <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                           [class.active]="star <= newReview.rating"
+                           (click)="newReview.rating = star">
+                    star
+                  </mat-icon>
+                </div>
+              </div>
+
+              <button mat-raised-button color="primary" (click)="submitReview()">
+                Отправить отзыв
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="reviews-list">
+          <div class="review-card" *ngFor="let review of selectedPlace?.reviews">
+            <div class="review-user">
+              <img [src]="review.authorPhoto || 'assets/default-avatar.jpg'" [alt]="review.author" class="user-avatar">
+              <div class="review-user-info">
+                <span class="review-author">{{ review.author }}</span>
+                <span class="review-date">{{ review.createdAt | date:'dd.MM.yyyy' }}</span>
+              </div>
+            </div>
+            <div class="review-content">
+              <div class="review-rating">
+                <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                         [class.active]="star <= review.rating">
+                  star
+                </mat-icon>
+              </div>
+              <p class="review-text">{{ review.text }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

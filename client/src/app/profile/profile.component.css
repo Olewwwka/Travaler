@@ -1,0 +1,192 @@
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 64px);
+  padding: 20px;
+  background-color: #f5f5f5;
+  margin-top: 20px;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: calc(100vh - 104px);
+  overflow: hidden;
+}
+
+.profile-content {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.profile-photo {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-photo:hover .photo-actions {
+  opacity: 1;
+}
+
+.profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  overflow: hidden;
+  max-width: 500px;
+}
+
+.favorite-points {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  max-width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorite-points h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-right: -4px;
+  max-height: calc(100vh - 200px);
+}
+
+.points-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.points-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+  margin: 2px 0;
+}
+
+.points-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.points-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.point-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.point-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.point-info h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.point-info p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field-actions {
+  display: flex;
+  align-items: center;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 4px;
+}
+
+mat-form-field {
+  flex: 1;
+}
+
+.password-section {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  min-width: 0;
+}
+
+.password-section h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.no-points {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} 

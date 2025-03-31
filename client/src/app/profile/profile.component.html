@@ -1,0 +1,106 @@
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <div class="profile-content">
+        <div class="profile-photo">
+          <img [src]="photoUrl" alt="Фото профиля" class="profile-image" (error)="onImageError($event)">
+          <div class="photo-actions">
+            <button mat-icon-button color="primary" (click)="fileInput.click()">
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deletePhoto()" *ngIf="hasCustomPhoto && !isDefaultPhoto">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none">
+        </div>
+
+        <div class="profile-info">
+          <div class="field-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Имя</mat-label>
+              <input matInput [(ngModel)]="editedName" [readonly]="!isEditingName">
+            </mat-form-field>
+            <div class="field-actions">
+              <button mat-icon-button *ngIf="!isEditingName" (click)="editName()">
+                <mat-icon>settings</mat-icon>
+              </button>
+              <div *ngIf="isEditingName" class="edit-actions">
+                <button mat-icon-button color="primary" (click)="saveName()">
+                  <mat-icon>check</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelEditingName()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput [(ngModel)]="editedEmail" [readonly]="!isEditingEmail">
+            </mat-form-field>
+            <div class="field-actions">
+              <button mat-icon-button *ngIf="!isEditingEmail" (click)="editEmail()">
+                <mat-icon>settings</mat-icon>
+              </button>
+              <div *ngIf="isEditingEmail" class="edit-actions">
+                <button mat-icon-button color="primary" (click)="saveEmail()">
+                  <mat-icon>check</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelEditingEmail()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="password-section">
+            <h3>Смена пароля</h3>
+            <div class="field-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Текущий пароль</mat-label>
+                <input matInput type="password" [(ngModel)]="currentPassword">
+              </mat-form-field>
+            </div>
+            <div class="field-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Новый пароль</mat-label>
+                <input matInput type="password" [(ngModel)]="newPassword">
+              </mat-form-field>
+            </div>
+            <div class="field-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Подтверждение нового пароля</mat-label>
+                <input matInput type="password" [(ngModel)]="confirmPassword">
+              </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" (click)="changePassword()" [disabled]="!isPasswordValid()">
+              Сменить пароль
+            </button>
+          </div>
+        </div>
+
+        <div class="favorite-points">
+          <h3>Избранные точки</h3>
+          <div class="points-list">
+            <div *ngFor="let point of favoritePoints" class="point-item">
+              <div class="point-info">
+                <h4>{{ point.name }}</h4>
+                <p>{{ point.description }}</p>
+                <p>Координаты: {{ point.latitude }}, {{ point.longitude }}</p>
+              </div>
+              <button mat-icon-button color="warn" (click)="removeFromFavorites(point)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="favoritePoints.length === 0" class="no-points">
+              <p>У вас пока нет избранных точек</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div> 
